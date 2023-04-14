@@ -5,6 +5,32 @@
     <meta charset="utf-8">
     <title>你好，GitHub</title>
 </head>
+<script>
+    function lottoNumber(count, left, right) {
+        let num = []
+        //            let count = 6,left=1,right=10
+
+        for (i = 0; i < count; i++) {
+            let temp = parseInt(Math.random() * right + left)
+            let flag = false
+            for (var index in num) {
+                if (num[index] == temp) {
+                    flag = true
+                    break
+                }
+            }
+            if (flag == false) {
+                num[i] = temp
+            } else {
+                i--
+            }
+        }
+        for (var index in num) {
+            document.write(num[index], " ")
+        }
+    }
+    lottoNumber(49, 1, 49)
+</script>
 
 <body>
     <h1>github</h1>
