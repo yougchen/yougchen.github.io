@@ -1,8 +1,9 @@
-<!DOCTYPE html>
 <html>
 
 <head>
   <title>project</title>
+
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 <style>
@@ -39,6 +40,11 @@
       pattern='[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$'><br>
     <input type='submit' name='button' id='button' value='註冊會員'>
   </form>
+  <form method="post" class='login' id='loginform2' name="form" action="" accept-charset="utf-8">
+    帳號名稱：<input id='username2' type='text' name='mem_account_num' required maxlength='15' pattern='.{6,}'>
+    密碼：<input id='password2' type='password' name='mem_password' required maxlength='10'>
+    <input type='submit' name='button' id='button' value='登入會員'>
+  </form>
   <div class="pt-4">
     <h3>購物車</h3>
     <a class="btn btn-info text-white" id="clear">清空購物車</a>
@@ -48,202 +54,9 @@
     總價: <span id="total"></span> 元
   </div>
 
-  <button id='login'>會員登入</button>
+  <!-- <button id='login'>會員登入</button> -->
 
 </body>
-
-<script>
-
-  var cart = [];
-  if (sessionStorage.getItem("cart")) {
-    cart = JSON.parse(sessionStorage.getItem("cart"));
-  }
-  // localStorage.clear();
-  sessionStorage.clear();
-  let login = document.getElementById("login")
-  let loginForm = document.getElementById("loginform");
-  //取出user總數
-  var i = parseInt(localStorage.getItem("num"));
-  //localstorage沒有設定時將i設為0
-  if (isNaN(i)) {
-    var i = 0;
-  }
-  var Shopp_num = 0;
-  let num = 19;
-
-  let username_num;
-  alert(localStorage.getItem("username" + num) + "    " + localStorage.getItem("password" + num));
-
-  login.addEventListener("click", function () {
-    loginForm.remove();
-    $("#loginform2").remove();
-
-    $('body').append(`
-    <form method="post" class='login' id='loginform2' name="form" action="" accept-charset="utf-8">
-      帳號名稱：<input id='username' type='text' name='mem_account_num' required maxlength='15' pattern='.{6,}'>
-      密碼：<input id='password' type='password' name='mem_password' required maxlength='10'>
-      <input type='submit' name='button' id='button' value='登入會員'>
-    </form> `);
-    let loginForm2 = document.getElementById("loginform2");
-
-    loginForm2.addEventListener("submit", function (e) {
-      e.preventDefault();
-      let login_flag = false;
-      let username = document.getElementById("username");
-      let password = document.getElementById("password");
-      if (username.value == "" || password.value == "") {
-        alert("Ensure you input a value in both fields!");
-      } else {
-        for (let num = 1; num <= i; num++) {
-          if (username.value === localStorage.getItem("username" + num) && password.value === localStorage.getItem("password" + num)) {
-            alert("正確的登入");
-            login_flag = true;
-            username_num = num;
-            sessionStorage.setItem("username" + username_num, `${username.value}`);
-            break;
-          }
-        }
-        if (login_flag == true) {
-
-          alert("登入成功!:歡迎" + sessionStorage.getItem("username" + username_num));
-          loginForm2.remove();
-          $("#login").remove();
-        }
-      }
-    });
-
-  });
-  $("#clear").click(function () {
-    cart = [];
-    sessionStorage.removeItem("cart");
-    setCart();
-  });
-  loginForm.addEventListener("submit", function (e) {
-    i++;
-    e.preventDefault();
-
-    let flag = false;
-    let username = document.getElementById("username");
-    let password = document.getElementById("password");
-    let mem_name = document.getElementById("mem_name");
-    let tel = document.getElementById("tel");
-    let email = document.getElementById("email");
-    if (username.value == "" || password.value == "") {
-      alert("Ensure you input a value in both fields!");
-    } else {
-      for (let num = 1; num <= i; num++) {
-        if (username.value == localStorage.getItem("username" + num)) {
-          alert("重複的username" + num);
-          flag = true;
-          break;
-        }
-      }
-      if (flag == false) {
-        // perform operation with form input
-        alert("This form has been successfully submitted!");
-        console.log(
-          `This form has a username${i} of ${username.value} and password of ${password.value}`
-        );
-
-        localStorage.setItem("username" + i, `${username.value}`)
-        localStorage.setItem("password" + i, `${password.value}`)
-        localStorage.setItem("num", `${i}`)
-        localStorage.setItem("mem_name" + i, `${mem_name.value}`)
-
-        username.value = "";
-        password.value = "";
-        mem_name.value = "";
-        tel.value = "";
-        email.value = "";
-      }
-      else {
-        i--;
-      }
-    }
-  });
-  function setCart() {
-    var cartList = "", s_price = 0, total = 0;
-    for (let $i = 0; $i < cart.length; $i++) {
-      s_price = cart[$i]["price"] * cart[$i]["quantity"];
-      total += s_price;
-      cartList += `<li> ${cart[$i]["goods"]} , 單價: ${cart[$i]["price"]}, 數量: ${cart[$i]["quantity"]
-        }, 總價: ${s_price}</li>`;
-    }
-    $("#cart")
-      .empty()
-      .append(cartList);
-    $("#total").text(total);
-  }
-
-
-  // corsUrl是為了讓codepen可以順利讓底下sourceUrl能回傳資料所寫上的url
-  const corsUrl = 'https://cors-anywhere.herokuapp.com/'
-  const sourceUrl = 'https://data.coa.gov.tw/api/v1/AgriProductsTransType/?Start_time=107.07.01&End_time=107.07.10'
-  const url = sourceUrl;
-
-  function printData(data) {
-    $('.loading').remove()
-    // let dataObj = JSON.parse(data)
-    for (let i = 0; i < data['Data'].length; i++) {
-
-      $('body').append(`
-              <div class="card">
-                
-                <div class="info">
-                  <button id="shopping" onclick="insert(this)">增加</button>
-                  <p id="1">${data['Data'][i]['TransDate']}</p>
-                  <p id="2">${data['Data'][i]['CropCode']}</p>
-                  <p id="3">${data['Data'][i]['CropName']}</p>
-                  <p id="4">${data['Data'][i]['Avg_Price']}</p>
-                </div>
-              </div>
-            `)
-    }
-
-
-  }
-
-  function getAlbum() {
-    $.ajax({
-      url,
-      type: 'GET',
-      success: data => printData(data),
-      error: err => console.log(err)
-    })
-  }
-  function insert(ct1) {
-    const goods = $(ct1).parent('div').children('p#2').html();
-    const price = $(ct1).parent('div').children('p#4').html();
-    if (sessionStorage.getItem("username" + username_num) === null) {
-      alert("is null");
-    }
-    else {
-      const username = sessionStorage.getItem("username" + username_num);
-      alert(sessionStorage.getItem("username" + username_num));
-      alert(username_num);
-
-      let count = 1;
-
-      alert($(ct1).parent('div').html());
-      var newItem = {
-        name: username,
-        goods: goods,
-        price: price,
-        quantity: count,
-
-      }
-      cart.push(newItem);
-      alert(JSON.stringify(cart));
-      sessionStorage.setItem("cart", JSON.stringify(cart));
-      setCart();
-    }
-  }
-
-  $(() => {
-    getAlbum()
-  })
-</script>
-
-
+<script src="project.js"></script>
 
 </html>
