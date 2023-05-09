@@ -1,5 +1,3 @@
-<html>
-
 <head>
   <title>project</title>
 
@@ -27,34 +25,12 @@
 </style>
 
 <body>
-  <div class="loading">Loading...</div>
-  <form method="post" class='login' id='loginform' name="form" action="" accept-charset="utf-8">
-    帳號名稱：<input id='username' type='text' name='mem_account_num' required maxlength='15' pattern='.{6,}'>
-    <span style='font-size:15px;'>(只能輸入A-Z,a-z,0-9, 至少6個字, 不超過15個字)</span><br>
-    姓名：<input id='mem_name' type='text' name='mem_name' required maxlength='15'>
-    <span style='font-size:15px;'>(不超過15個字)</span><br>
-    密碼：<input id='password' type='password' name='mem_password' required maxlength='10'>
-    <span style='font-size:15px;'></span><br>
-    電話：<input id='tel' type='tel' name='mem_phone' required placeholder='09xxxxxxxx' pattern='.{9,}' maxlength='10'><br>
-    Email：<input id='email' type='email' name='mem_email' required placeholder='example@mail.com'
-      pattern='[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$'><br>
-    <input type='submit' name='button' id='button' value='註冊會員'>
-  </form>
-  <form method="post" class='login' id='loginform2' name="form" action="" accept-charset="utf-8">
-    帳號名稱：<input id='username2' type='text' name='mem_account_num' required maxlength='15' pattern='.{6,}'>
-    密碼：<input id='password2' type='password' name='mem_password' required maxlength='10'>
-    <input type='submit' name='button' id='button' value='登入會員'>
-  </form>
-  <div class="pt-4">
-    <h3>購物車</h3>
-    <a class="btn btn-info text-white" id="clear">清空購物車</a>
-    <ul id="cart">
 
-    </ul>
-    總價: <span id="total"></span> 元
-  </div>
+  <button id='session_clear'>session.clear()</button>
 
-  <!-- <button id='login'>會員登入</button> -->
+  <button id='reg'>會員註冊</button>
+
+  <button id='login'>會員登入</button>
 
 </body>
 <script src="project.js"></script>
